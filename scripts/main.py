@@ -21,5 +21,5 @@ x = requests.delete(f"http://{address}/pof-lux/clear_tracking")
 ftp = FTP("146.164.132.215")
 ftp.login("poflux", "hDCsGW&BNBz%K3K")
 with open(filepath + filename, "rb") as datafile:
-    responseMessage = ftp.storbinary('STOR ' + filename, datafile)
+    responseMessage = ftp.storbinary("STOR " + filename, datafile)
     print(responseMessage)

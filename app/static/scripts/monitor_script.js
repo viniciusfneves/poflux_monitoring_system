@@ -70,7 +70,7 @@ function setOpMode(mode) {
 ws.onmessage = function (response) {
 	let json = JSON.parse(response.data);
 
-	let now = new Date(json["ESPClock"] * 1000);
+	let now = new Date(json["esp_clock"] * 1000);
 
 	setOpMode(json["mode"]);
 
@@ -82,21 +82,19 @@ ws.onmessage = function (response) {
 	document.getElementById("rtc_second").innerHTML = now.getUTCSeconds();
 
 	let motor_percentage = (json["motor"] / 2.55).toFixed(1);
-	document.getElementById("motor-pwr-bar").innerHTML = motor_percentage + "%";
-	document.getElementById("motor-pwr-bar").style.width = motor_percentage + "%";
+	document.getElementById("motor-bar").value = motor_percentage;
+	document.getElementById("kp").innerHTML = json["pid_values"]["kp"];
+	document.getElementById("ki").innerHTML = json["pid_values"]["ki"];
+	document.getElementById("kd").innerHTML = json["pid_values"]["kd"];
+	document.getElementById("P").innerHTML = json["pid_values"]["p"].toFixed(1);
+	document.getElementById("I").innerHTML = json["pid_values"]["i"].toFixed(2);
+	document.getElementById("D").innerHTML = json["pid_values"]["d"].toFixed(2);
+	document.getElementById("pid_output").innerHTML = json["pid_values"]["output"];
+	document.getElementById("error").innerHTML = json["pid_values"]["error"];
 
-	document.getElementById("kp").innerHTML = json["PID_values"]["kp"];
-	document.getElementById("ki").innerHTML = json["PID_values"]["ki"];
-	document.getElementById("kd").innerHTML = json["PID_values"]["kd"];
-	document.getElementById("P").innerHTML = json["PID_values"]["p"].toFixed(1);
-	document.getElementById("I").innerHTML = json["PID_values"]["i"].toFixed(2);
-	document.getElementById("D").innerHTML = json["PID_values"]["d"].toFixed(2);
-	document.getElementById("pid_output").innerHTML = json["PID_values"]["output"];
-	document.getElementById("error").innerHTML = json["PID_values"]["error"];
-
-	let manual_setpoint = json["manualSetpoint"];
-	let lens_angle = json["MPU"]["lensAngle"];
-	let sun_position = json["sunPosition"];
+	let manual_setpoint = json["manual_setpoint"];
+	let lens_angle = json["mpu"]["lens_angle"];
+	let sun_position = json["sun_position"];
 	Plotly.newPlot(
 		lens_info_graph,
 		[
