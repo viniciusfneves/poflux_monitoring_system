@@ -15,10 +15,13 @@ body {
 	height: 90px;
 }
 
-.data-container {
-	padding: 1rem;
+.container-size {
 	width: 70%;
 	max-width: 1000px;
+}
+
+.data-container {
+	padding: 1rem;
 	margin: 12px auto;
 	border-radius: 12px;
 	box-shadow: 1.5px 1.5px 2px 0px rgba(0, 0, 0, 0.15);
@@ -48,13 +51,6 @@ progress::-webkit-progress-value {
 #debug-send-button {
 	color: white;
 	background-color: lightseagreen;
-}
-
-#lens_info {
-	margin: 0 auto;
-	width: 65%;
-	max-height: 400px;
-	max-width: 1000px;
 }
 
 .footer {

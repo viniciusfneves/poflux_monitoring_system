@@ -1,4 +1,3 @@
-import { ws } from "./websocket.js";
 import "https://cdn.plot.ly/plotly-2.20.0.min.js";
 
 const lens_info_graph = document.getElementById("lens_info");
@@ -8,10 +7,30 @@ const fig_aperture = 5;
 var modified = false;
 var ticks = 0;
 
+var ip = "192.168.0.101";
+
+/*Abre a conexão com serviço WebSocket do ESP*/
+var ws = new WebSocket(`ws://${ip}:81`);
+
+// ws.onopen = function () {
+// 	document.getElementById("connection_status").innerHTML = "Status: Conectado";
+// };
+
+function setConfig(config) {
+	fetch(`http://${ip}/config`, {
+		method: "PATCH",
+		body: JSON.stringify(config),
+		headers: {
+			"content-type": "application/json; charset=UTF-8",
+		},
+	});
+}
+
 window.onload = function () {
-	document.getElementById("auto-btn").addEventListener("click", (_) => ws.send("{'mode':'auto'}"));
-	document.getElementById("manual-btn").addEventListener("click", (_) => ws.send("{'mode':'manual'}"));
-	document.getElementById("halt-btn").addEventListener("click", (_) => ws.send("{'mode':'halt'}"));
+	document.getElementById("auto-btn").addEventListener("click", (_) => setConfig({ mode: "auto" }));
+	document.getElementById("manual-btn").addEventListener("click", (_) => setConfig({ mode: "manual" }));
+	document.getElementById("halt-btn").addEventListener("click", (_) => setConfig({ mode: "halt" }));
+	document.getElementById("presentation-btn").addEventListener("click", (_) => setConfig({ mode: "presentation" }));
 	document.getElementById("adjust_rtc").oninput = function () {
 		modified = true;
 		ticks = 0;
@@ -19,7 +38,7 @@ window.onload = function () {
 	document.getElementById("rtc-set-btn").addEventListener("click", (_) => {
 		let value = document.getElementById("adjust_rtc").value;
 		let date = Date.parse(value + "Z");
-		ws.send(`{'adjust':{'rtc':${date / 1000}}}`);
+		setConfig({ adjust: { rtc: date / 1000 } });
 	});
 	document
 		.getElementById("download-tracking-file")
@@ -92,14 +111,17 @@ ws.onmessage = function (response) {
 	document.getElementById("pid_output").innerHTML = json["pid_values"]["output"];
 	document.getElementById("error").innerHTML = json["pid_values"]["error"];
 
-	let manual_setpoint = json["manual_setpoint"];
-	let lens_angle = json["mpu"]["lens_angle"];
-	let sun_position = json["sun_position"];
+	document.getElementById("solar_angle").innerHTML = `${json["sun_position"]}º`;
+	document.getElementById("lens_angle").innerHTML = `${json["mpu"]["lensAngle"]}º`;
+
+	let manual_setpoint = json["manual_setpoint"] * -1 + 90;
+	let lens_angle = json["mpu"]["lensAngle"] * -1 + 90;
+	let sun_position = json["sun_position"] * -1 + 90;
 	Plotly.newPlot(
 		lens_info_graph,
 		[
 			{
-				name: "Manual Setpoint",
+				name: "Manual",
 				type: "scatterpolar",
 				mode: "lines",
 				r: [1.5, 1.75],
@@ -110,7 +132,7 @@ ws.onmessage = function (response) {
 				},
 			},
 			{
-				name: "Lens Angle",
+				name: "Ângulo da Lente",
 				type: "scatterpolar",
 				mode: "lines",
 				r: [2, 2.25, 2.25, 2],
@@ -127,7 +149,7 @@ ws.onmessage = function (response) {
 				},
 			},
 			{
-				name: "Sun Position",
+				name: "Posição do Sol",
 				type: "scatterpolar",
 				mode: "lines",
 				r: [4, 4.25, 4.25, 4],
