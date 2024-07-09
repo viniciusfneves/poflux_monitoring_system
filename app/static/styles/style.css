@@ -1,61 +1,60 @@
 html {
-	font-family: Helvetica;
-	text-align: center;
-	color: black;
-	min-height: 100%;
+  font-family: Helvetica;
+  text-align: center;
+  color: black;
+  min-height: 100%;
 }
 
 body {
-	background: linear-gradient(145deg, rgba(40, 86, 145, 0.322), 12%, rgb(233, 233, 233));
+  background: #dddddd;
 }
 
 #logo_lif {
-	/* position: absolute; */
-	margin: 1rem auto 0 auto;
-	height: 90px;
+  position: absolute;
+  left: 1rem;
+  margin: 1rem auto 0 auto;
 }
 
 .container-size {
-	width: 70%;
-	max-width: 1000px;
+  width: 70%;
+  max-width: 1000px;
 }
 
 .data-container {
-	padding: 1rem;
-	margin: 12px auto;
-	border-radius: 12px;
-	box-shadow: 1.5px 1.5px 2px 0px rgba(0, 0, 0, 0.15);
-	background-color: white;
+  padding: 12px;
+  margin: 5px auto;
+  border-radius: 12px;
+  background-color: white;
 }
 
 progress {
-	border-radius: 25px;
-	background-color: #000;
-	accent-color: #fff;
-	overflow: hidden;
+  border-radius: 10px;
+  background-color: #000;
+  accent-color: #fff;
+  overflow: hidden;
 }
 
 progress::-webkit-progress-value {
-	background: linear-gradient(90deg, rgb(29, 170, 0), rgb(255, 50, 50));
+  background: linear-gradient(90deg, rgb(29, 170, 0), rgb(255, 50, 50));
 }
 
 #debug-message-text-field {
-	width: 40%;
-	font-size: large;
-	text-align: center;
-	border-radius: 5px;
-	border-color: black;
-	padding: 3px;
+  width: 40%;
+  font-size: large;
+  text-align: center;
+  border-radius: 5px;
+  border-color: black;
+  padding: 3px;
 }
 
 #debug-send-button {
-	color: white;
-	background-color: lightseagreen;
+  color: white;
+  background-color: lightseagreen;
 }
 
 .footer {
-	width: 70%;
-	max-width: 1000px;
-	margin: 12px auto;
-	text-align: end;
+  width: 70%;
+  max-width: 1000px;
+  margin: 12px auto;
+  text-align: end;
 }
